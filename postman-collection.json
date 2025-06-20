@@ -1,0 +1,210 @@
+{
+  "info": {
+    "name": "PluginFramework",
+    "_postman_id": "12345-abcde-pluginframework-demo",
+    "description": "Demo & Test of all plugin framework endpoints (secured & public)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "List All Plugins (public)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": { "raw": "http://localhost:8080/plugins", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["plugins"] }
+      }
+    },
+    {
+      "name": "Upload Plugin (secured)",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "file",
+              "type": "file",
+              "src": "/path/to/your/plugin-calculator-1.0.0.jar"
+            }
+          ]
+        },
+        "url": { "raw": "http://localhost:8080/plugins", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["plugins"] },
+        "auth": {
+          "type": "basic",
+          "basic": [
+            { "key": "username", "value": "admin", "type": "string" },
+            { "key": "password", "value": "admin123", "type": "string" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Activate Plugin (secured)",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": { "raw": "http://localhost:8080/plugins/1/activate", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["plugins", "1", "activate"] },
+        "auth": {
+          "type": "basic",
+          "basic": [
+            { "key": "username", "value": "admin", "type": "string" },
+            { "key": "password", "value": "admin123", "type": "string" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Deactivate Plugin (secured)",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": { "raw": "http://localhost:8080/plugins/1/deactivate", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["plugins", "1", "deactivate"] },
+        "auth": {
+          "type": "basic",
+          "basic": [
+            { "key": "username", "value": "admin", "type": "string" },
+            { "key": "password", "value": "admin123", "type": "string" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Remove Plugin (secured)",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": { "raw": "http://localhost:8080/plugins/1", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["plugins", "1"] },
+        "auth": {
+          "type": "basic",
+          "basic": [
+            { "key": "username", "value": "admin", "type": "string" },
+            { "key": "password", "value": "admin123", "type": "string" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Execute Plugin (plain string, public)",
+      "request": {
+        "method": "POST",
+        "header": [ { "key": "Content-Type", "value": "text/plain" } ],
+        "body": { "mode": "raw", "raw": "add 5 2" },
+        "url": { "raw": "http://localhost:8080/plugins/1/execute", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["plugins", "1", "execute"] }
+      }
+    },
+    {
+      "name": "List Plugin Methods (secured)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": { "raw": "http://localhost:8080/plugins/1/methods", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["plugins", "1", "methods"] },
+        "auth": {
+          "type": "basic",
+          "basic": [
+            { "key": "username", "value": "admin", "type": "string" },
+            { "key": "password", "value": "admin123", "type": "string" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Invoke Plugin Method (secured, String args)",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": {
+          "raw": "http://localhost:8080/plugins/1/invoke?method=add",
+          "protocol": "http",
+          "host": ["localhost"], "port": "8080", "path": ["plugins", "1", "invoke"],
+          "query": [{ "key": "method", "value": "add" }]
+        },
+        "auth": {
+          "type": "basic",
+          "basic": [
+            { "key": "username", "value": "admin", "type": "string" },
+            { "key": "password", "value": "admin123", "type": "string" }
+          ]
+        },
+        "body": { "mode": "raw", "raw": "[\"5\", \"2\"]" }
+      }
+    },
+    {
+      "name": "Invoke Plugin Method (secured, Typed args)",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": {
+          "raw": "http://localhost:8080/plugins/1/safeInvoke?method=add",
+          "protocol": "http",
+          "host": ["localhost"], "port": "8080", "path": ["plugins", "1", "safeInvoke"],
+          "query": [{ "key": "method", "value": "add" }]
+        },
+        "auth": {
+          "type": "basic",
+          "basic": [
+            { "key": "username", "value": "admin", "type": "string" },
+            { "key": "password", "value": "admin123", "type": "string" }
+          ]
+        },
+        "body": { "mode": "raw", "raw": "[5, 2]" }
+      }
+    },
+    {
+      "name": "Universal Execute (super abstract, JSON, secured)",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": { "raw": "http://localhost:8080/plugins/execute", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["plugins", "execute"] },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"pluginId\": 1,\n  \"method\": \"add\",\n  \"args\": [5, 2]\n}"
+        }
+      }
+    },
+    {
+      "name": "Universal Execute (super abstract, plugin name, secured)",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": { "raw": "http://localhost:8080/plugins/execute", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["plugins", "execute"] },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"plugin\": \"Calculator Plugin\",\n  \"method\": \"add\",\n  \"args\": [5, 2]\n}"
+        }
+      }
+    },
+    {
+      "name": "Execute Plugin by ID (JSON, flexible, secured)",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": { "raw": "http://localhost:8080/plugins/1/execute", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["plugins", "1", "execute"] },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"method\": \"add\",\n  \"args\": [5, 2]\n}"
+        }
+      }
+    },
+    {
+      "name": "Plugin-to-plugin call (formatHeading, requires two plugins)",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": {
+          "raw": "http://localhost:8080/plugins/2/invoke?method=formatHeading",
+          "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["plugins", "2", "invoke"],
+          "query": [{ "key": "method", "value": "formatHeading" }]
+        },
+        "auth": {
+          "type": "basic",
+          "basic": [
+            { "key": "username", "value": "admin", "type": "string" },
+            { "key": "password", "value": "admin123", "type": "string" }
+          ]
+        },
+        "body": { "mode": "raw", "raw": "[\"hello world\"]" }
+      }
+    }
+  ]
+}
